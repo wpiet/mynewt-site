@@ -51,5 +51,5 @@ jobs:
           git clone https://github.com/apache/mynewt-newtmgr
           cd mynewt-site
           ./build.py
-          ./deploy.sh
+          ./deploy.sh build
           git diff --name-only
