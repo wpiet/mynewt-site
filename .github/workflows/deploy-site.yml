@@ -33,6 +33,19 @@ jobs:
         with:
           ref: master
 
+      - name: Check For Content Changes
+        run: |
+          latest_commit=$(git rev-parse HEAD)
+          previous_commit=$(git rev-parse HEAD~1)
+          content_changed=$(git diff --name-only $previous_commit $latest_commit | grep -E '\.(html|css|js|py|md|rst)$')
+          
+          if [ -z "$content_changed" ]; then
+            echo "No relevant changes detected."
+            exit 0
+          else
+            echo "Relevant changes detected."
+          fi
+
       - name: Install Dependencies
         run: |
           sudo apt-get update
