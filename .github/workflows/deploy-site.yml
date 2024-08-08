@@ -15,7 +15,7 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-##
+###
 
 name: Deploy Site
 on: push
@@ -36,13 +36,15 @@ jobs:
         run: |
           latest_commit=$(git rev-parse HEAD)
           previous_commit=$(git rev-parse HEAD~1)
-          content_changed=$(git diff --name-only $previous_commit $latest_commit | grep -E '\.(html|css|js|py|md|rst)$') || true
+          files_changed=$(git diff --name-only $previous_commit $latest_commit |
+          grep -E '\.(html|css|js|png|md|rst)$') || true
           
-          if [ -z "$content_changed" ]; then
+          if [ -z "$files_changed" ]; then
             echo "No relevant changes detected."
             echo "changed=false" >> $GITHUB_OUTPUT
           else
-            echo "Relevant changes detected."
+            echo "Content changes detected:"
+            echo "$files_changed"
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
